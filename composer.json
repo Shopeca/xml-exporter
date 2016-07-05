@@ -1,0 +1,35 @@
+{
+	"name": "shopeca/xml-generator",
+	"description": "XML generator with Latte template support",
+	"keywords": [
+		"latte",
+		"xml"
+	],
+	"license": [
+		"MIT"
+	],
+	"authors": [
+		{
+			"name": "Tom Hnatovsky"
+		},
+		{
+			"name": "Martin Knor"
+		}
+	],
+	"require": {
+		"php": ">=5.4",
+		"nette/utils": "~2.3.0",
+		"latte/latte": "~2.3.0"
+	},
+	"require-dev": {
+		"nette/tester": "@dev"
+	},
+	"autoload": {
+		"psr-4": {
+			"Shopeca\\XML\\": "src/"
+		},
+		"classmap": [
+			"src/exceptions.php"
+		]
+	}
+}

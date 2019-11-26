@@ -7,12 +7,13 @@ namespace Shopeca\XML;
  * @package Shopeca\XML
  */
 class Storage implements IStorage {
-    /** @var */
+
+    /** @var string */
     private $dir;
 
     /**
      * Storage constructor.
-     * @param $dir
+     * @param string $dir
      */
     function __construct($dir)
     {
@@ -20,8 +21,8 @@ class Storage implements IStorage {
     }
 
     /**
-     * @param $filename
-     * @param $content
+     * @param string $filename
+     * @param string $content
      */
     public function save($filename, $content)
     {
@@ -32,7 +33,7 @@ class Storage implements IStorage {
     }
 
     /**
-     * @param $xml
+     * @param string $xml
      * @return string
      */
     protected function formatXml($xml)

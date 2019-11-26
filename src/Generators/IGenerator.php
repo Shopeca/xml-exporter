@@ -15,7 +15,7 @@ interface IGenerator {
 
     /**
      * Save file
-     * @param $filename
+     * @param string $filename
      * @return mixed
      */
     public function save($filename);

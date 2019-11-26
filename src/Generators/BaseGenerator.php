@@ -2,7 +2,7 @@
 namespace Shopeca\XML\Generators;
 
 use Latte\Engine;
-use Nette\Object;
+use Nette\SmartObject;
 use Shopeca\XML\FileEmptyException;
 use Shopeca\XML\ItemIncompletedException;
 use Shopeca\XML\Storage;
@@ -12,12 +12,14 @@ use Shopeca\XML\Storage;
  * @author Martin Knor <martin.knor@gmail.com>
  * @package Shopeca\XML\Generators
  */
-abstract class BaseGenerator extends Object implements IGenerator {
+abstract class BaseGenerator implements IGenerator {
+
+	use SmartObject;
 
     /** @var bool true if some products added */
     private $prepared = false;
 
-    /** @var resource|bool|null temp file */
+    /** @var resource|bool */
     private $handle;
 
     /** @var \Shopeca\XML\Storage */
@@ -33,7 +35,7 @@ abstract class BaseGenerator extends Object implements IGenerator {
     }
 
     /**
-     * @param $name
+     * @param string $name
      * @return string path to template
      */
     abstract protected function getTemplate($name);
@@ -67,7 +69,9 @@ abstract class BaseGenerator extends Object implements IGenerator {
 
         $latte = new Engine;
         $xmlItem = $latte->renderToString($this->getTemplate($templateName), array('item' => $item));
-        fwrite($this->handle, $xmlItem);
+        if (is_resource($this->handle)) {
+            fwrite($this->handle, $xmlItem);
+        }
     }
 
     /**
@@ -87,7 +91,7 @@ abstract class BaseGenerator extends Object implements IGenerator {
     abstract function generate();
 
     /**
-     * @param $filename
+     * @param string $filename
      * @return void
      */
     public function save($filename)
@@ -100,25 +104,32 @@ abstract class BaseGenerator extends Object implements IGenerator {
 
         $this->prepareTemplate('footer');
 
-        $size = ftell($this->handle);
-        rewind($this->handle);
-        $this->storage->save($filename, fread($this->handle, $size));
+        if (is_resource($this->handle)) {
+            $size = ftell($this->handle) ?: 0;
+            rewind($this->handle);
+            $this->storage->save($filename, fread($this->handle, $size) ?: '');
 
-        fclose($this->handle);
+            fclose($this->handle);
+        }
 
         $this->prepared = false;
     }
 
     /**
-     * @param $template
+     * @param string $template
      */
     protected function prepareTemplate($template)
     {
         $file = $this->getTemplate($template);
         $footerHandle = fopen('safe://' . $file, 'r');
-        $footer = fread($footerHandle, filesize($file));
-        fclose($footerHandle);
-        fwrite($this->handle, $footer);
+        if (is_resource($footerHandle)) {
+        	$size = filesize($file) ?: 0;
+            $footer = fread($footerHandle, $size);
+            fclose($footerHandle);
+            if ($footer && is_resource($this->handle)) {
+                fwrite($this->handle, $footer);
+            }
+        }
     }
 
 }

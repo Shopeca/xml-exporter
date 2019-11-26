@@ -8,15 +8,18 @@ use Nette;
  * @author Tom Hnatovsky <tom@hnatovsky.cz>
  * @package Shopeca\XML\Generators
  */
-abstract class BaseParameter extends Nette\Object
+abstract class BaseParameter
 {
+
+	use Nette\SmartObject;
+
 	protected $name;
 	protected $value;
 
 	/**
 	 * Parameter constructor.
-	 * @param $name
-	 * @param $value
+	 * @param string $name
+	 * @param string $value
 	 */
 	public function __construct($name, $value)
 	{

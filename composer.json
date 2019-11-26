@@ -1,6 +1,7 @@
 {
 	"name": "shopeca/xml-generator",
 	"description": "XML generator with Latte template support",
+	"version": "1.0.2",
 	"keywords": [
 		"latte",
 		"xml"
@@ -17,14 +18,15 @@
 		}
 	],
 	"require": {
-		"php": ">=5.4",
-		"nette/utils": "~2.3.0",
-		"latte/latte": "~2.3.0",
-		"nette/safe-stream": "^2.3",
-		"nette/reflection": "^2.3"
+		"php": ">=7",
+		"nette/utils": "^3.0",
+		"latte/latte": "^2.5",
+		"nette/safe-stream": "^2.4",
+		"nette/reflection": "^2.4"
 	},
 	"require-dev": {
-		"nette/tester": "@dev"
+		"phpunit/phpunit": "^7",
+		"phpstan/phpstan": "^0.11.19"
 	},
 	"autoload": {
 		"psr-4": {

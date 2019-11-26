@@ -3,29 +3,33 @@ namespace Shopeca\XML\Generators;
 
 use Nette;
 
-/**
- * Class BaseItem
- * @author Martin Knor <martin.knor@gmail.com>
- * @package Shopeca\XML\Generators
- */
-abstract class BaseItem extends Nette\Object implements IItem
+abstract class BaseItem implements IItem
 {
+
+	use Nette\SmartObject;
 
 	/**
 	 * Validate item
 	 * @return bool return true if item is valid
      */
 	public function validate() {
-		$reflection = $this->getReflection();
 
-		foreach ($reflection->getProperties(\ReflectionProperty::IS_PUBLIC) as $v) {
-			if ($v->getAnnotation('required')) {
-				if (!isset($this->{$v->getName()})) {
-					return FALSE;
+		try {
+			$reflection = new \ReflectionClass($this);
+
+			foreach ($reflection->getProperties(\ReflectionProperty::IS_PROTECTED) as $v) {
+				$comment = $v->getDocComment();
+				if ($comment && preg_match('|\@required|', $comment)) {
+					if (!isset($this->{$v->getName()})) {
+						return false;
+					}
 				}
 			}
+		} catch (\Exception $exception) {
+			return true;
 		}
 
-		return TRUE;
+		return true;
 	}
+
 }

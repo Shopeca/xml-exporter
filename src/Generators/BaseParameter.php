@@ -1,17 +1,20 @@
 <?php
 namespace Shopeca\XML\Generators;
 
-use Nette;
+use Nette\SmartObject;
 
 /**
  * Class BaseParameter
  * @author Tom Hnatovsky <tom@hnatovsky.cz>
  * @package Shopeca\XML\Generators
+ *
+ * @property string $name
+ * @property string $value
  */
 abstract class BaseParameter
 {
 
-	use Nette\SmartObject;
+	use SmartObject;
 
 	protected $name;
 	protected $value;

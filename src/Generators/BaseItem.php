@@ -8,11 +8,15 @@ abstract class BaseItem implements IItem
 
 	use Nette\SmartObject;
 
+	private $validationFails = [];
+
 	/**
 	 * Validate item
 	 * @return bool return true if item is valid
      */
 	public function validate() {
+		$valid = true;
+		$this->validationFails = [];
 
 		try {
 			$reflection = new \ReflectionClass($this);
@@ -21,15 +25,21 @@ abstract class BaseItem implements IItem
 				$comment = $v->getDocComment();
 				if ($comment && preg_match('|\@required|', $comment)) {
 					if (!isset($this->{$v->getName()})) {
-						return false;
+						$this->validationFails[] = $v->getName();
+						$valid = false;
 					}
 				}
 			}
 		} catch (\Exception $exception) {
-			return true;
+			return $valid;
 		}
 
-		return true;
+		return $valid;
+	}
+
+	public function getLastValidationErrors()
+	{
+		return $this->validationFails;
 	}
 
 }

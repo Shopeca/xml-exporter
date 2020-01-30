@@ -1,7 +1,7 @@
 {
 	"name": "shopeca/xml-generator",
 	"description": "XML generator with Latte template support",
-	"version": "1.0.3",
+	"version": "1.0.5",
 	"keywords": [
 		"latte",
 		"xml"

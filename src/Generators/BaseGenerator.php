@@ -17,13 +17,13 @@ abstract class BaseGenerator implements IGenerator {
 	use SmartObject;
 
     /** @var bool true if some products added */
-    private $prepared = false;
+	protected $prepared = false;
 
     /** @var resource|bool */
-    private $handle;
+    protected $handle;
 
     /** @var \Shopeca\XML\Storage */
-    private $storage;
+	protected $storage;
 
     /**
      * BaseGenerator constructor.
